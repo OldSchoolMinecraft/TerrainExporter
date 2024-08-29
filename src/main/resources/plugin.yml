@@ -1,0 +1,9 @@
+name: TerrainExporter
+version: 1.0
+main: net.oldschoolminecraft.te.TerrainExporter
+author: ChatGPT
+commands:
+  exportterrain:
+    description: Export terrain surface data
+  exportcurrentchunk:
+    description: Export the current chunk
