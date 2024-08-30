@@ -161,18 +161,11 @@ public class TerrainExporter extends JavaPlugin
         }
         try (DataOutputStream dos = new DataOutputStream(Files.newOutputStream(chunkFile.toPath())))
         {
-            Chunk chunk = getServer().getWorld("world").getChunkAt(chunkX, chunkZ);
-            if (!chunk.isLoaded()) chunk.load();
+            // Write the starting coordinates of the chunk
+            dos.writeInt(chunkX * CHUNK_SIZE);
+            dos.writeInt(chunkZ * CHUNK_SIZE);
 
-            ByteBuffer buffer = ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN);
-
-            buffer.putInt(chunkX * CHUNK_SIZE);
-            dos.write(buffer.array());
-
-            buffer.clear();
-            buffer.putInt(chunkZ * CHUNK_SIZE);
-            dos.write(buffer.array());
-
+            // Loop through all blocks in the chunk
             for (int x = 0; x < CHUNK_SIZE; x++)
             {
                 for (int z = 0; z < CHUNK_SIZE; z++)
@@ -180,13 +173,14 @@ public class TerrainExporter extends JavaPlugin
                     int worldX = chunkX * CHUNK_SIZE + x;
                     int worldZ = chunkZ * CHUNK_SIZE + z;
                     int highestY = getServer().getWorld("world").getHighestBlockYAt(worldX, worldZ);
-                    Block block = getServer().getWorld("world").getBlockAt(worldX, highestY - 1, worldZ);
+                    Block block = getServer().getWorld("world").getBlockAt(worldX, highestY, worldZ);
+
+                    // Get the block type code
                     int blockTypeCode = block.getTypeId();
 
+                    // Write height and block type to file
                     dos.writeByte(highestY); // Height (1 byte)
-                    buffer.clear();
-                    buffer.putInt(blockTypeCode);
-                    dos.write(buffer.array()); // Block type (4 bytes)
+                    dos.writeInt(blockTypeCode); // Block type (4 bytes)
                 }
             }
             getLogger().info("Chunk " + chunkX + ", " + chunkZ + " exported.");
