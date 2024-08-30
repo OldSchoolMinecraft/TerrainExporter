@@ -5,5 +5,7 @@ author: ChatGPT
 commands:
   exportterrain:
     description: Export terrain surface data
-  exportcurrentchunk:
-    description: Export the current chunk
+  savechunk:
+    description: Export the current chunk (or a radius)
+  import:
+    description: Import a chunk
