@@ -22,6 +22,7 @@ import static org.bukkit.Bukkit.getScheduler;
 public class TerrainExporter extends JavaPlugin
 {
     private static final int CHUNK_SIZE = 16;
+    private static boolean runningExport = false;
 
     public void onEnable()
     {
@@ -44,12 +45,29 @@ public class TerrainExporter extends JavaPlugin
                     try
                     {
                         int radius = Integer.parseInt(args[0]);
+                        if (radius > 16)
+                        {
+                            sender.sendMessage(ChatColor.RED + "A radius higher than 16 is not allowed due to buggy behavior.");
+                            return true;
+                        }
+
+                        if (runningExport)
+                        {
+                            sender.sendMessage(ChatColor.RED + "An export is already running. Please try again later.");
+                            sender.sendMessage(ChatColor.RED + "Only one export can run at a time for performance reasons.");
+                            return true;
+                        }
+
                         sender.sendMessage("Saving chunks in a radius of " + radius + " chunk(s)");
                         new Thread(() ->
                         {
                             try
                             {
+                                runningExport = true;
+                                System.out.println("=== Starting bulk terrain export! ===");
                                 exportChunksAroundPlayer(chunkX, chunkZ, radius);
+                                System.out.println("=== Bulk terrain export completed! ===");
+                                runningExport = false;
                             } catch (Exception ex) {
                                 ex.printStackTrace(System.err);
                             }
