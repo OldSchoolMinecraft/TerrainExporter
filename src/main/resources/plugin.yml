@@ -5,5 +5,3 @@ author: ChatGPT
 commands:
   savechunk:
     description: Export the current chunk (or a radius)
-  import:
-    description: Import a chunk

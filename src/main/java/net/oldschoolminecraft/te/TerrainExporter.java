@@ -97,42 +97,6 @@ public class TerrainExporter extends JavaPlugin
             }
         });
 
-        getCommand("import").setExecutor(((sender, cmd, label, args) ->
-        {
-            if (!(sender.hasPermission("te.import") || sender.isOp()))
-            {
-                sender.sendMessage(ChatColor.RED + "You don't have permission to use this command!");
-                return true;
-            }
-
-            if (args.length < 2)
-            {
-                sender.sendMessage("Usage: /import <chunkX> <chunkZ>");
-                return true;
-            }
-
-            int chunkX;
-            int chunkZ;
-
-            try
-            {
-                chunkX = Integer.parseInt(args[0]);
-                chunkZ = Integer.parseInt(args[1]);
-            } catch (NumberFormatException ex) {
-                sender.sendMessage("Use numbers dummy");
-                return true;
-            }
-
-            try
-            {
-                importSingleChunkTerrainData(chunkX, chunkZ);
-            } catch (IOException e) {
-                sender.sendMessage(e.getMessage());
-            }
-
-            return true;
-        }));
-
         System.out.println("TerrainExporter enabled");
     }
 
