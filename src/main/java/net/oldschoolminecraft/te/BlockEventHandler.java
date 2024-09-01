@@ -1,5 +1,6 @@
 package net.oldschoolminecraft.te;
 
+import net.oldschoolminecraft.te.job.ExportJob;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,6 +10,8 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 public class BlockEventHandler implements Listener
 {
+    private ExportManager exportManager = TerrainExporter.getInstance().getExportManager();
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event)
     {
@@ -17,7 +20,7 @@ public class BlockEventHandler implements Listener
         if (highestY > blockLoc.getBlockY()) return; // there are blocks above it, the change won't be visible
         int chunkX = Utils.calculateChunkCoordinate(blockLoc.getBlockX());
         int chunkZ = Utils.calculateChunkCoordinate(blockLoc.getBlockZ());
-        ExportManager.getInstance().queueExport(chunkX, chunkZ);
+        exportManager.queueJob(new ExportJob(chunkX, chunkZ));
 
         System.out.println("=== " + event.getPlayer().getName() + " triggered an export job @ " + chunkX + "," + chunkZ + "! ===");
     }
@@ -32,7 +35,7 @@ public class BlockEventHandler implements Listener
         if (highestY > blockLoc.getBlockY()) return; // there are blocks above it, the change won't be visible
         int chunkX = Utils.calculateChunkCoordinate(blockLoc.getBlockX());
         int chunkZ = Utils.calculateChunkCoordinate(blockLoc.getBlockZ());
-        ExportManager.getInstance().queueExport(chunkX, chunkZ);
+        exportManager.queueJob(new ExportJob(chunkX, chunkZ));
 
         System.out.println("=== " + event.getPlayer().getName() + " triggered an export job @ " + chunkX + "," + chunkZ + "! ===");
     }
