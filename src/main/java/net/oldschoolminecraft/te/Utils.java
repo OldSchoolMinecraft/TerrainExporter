@@ -63,7 +63,7 @@ public class Utils
                         int blockTypeCode = block.getTypeId();
                         byte data = block.getData();
 
-                        dos.writeByte(highestY); // Height (1 byte)
+                        dos.writeByte(highestY-1); // Height (1 byte)
                         dos.writeByte(blockTypeCode);
                         dos.writeByte(data);
                     }
