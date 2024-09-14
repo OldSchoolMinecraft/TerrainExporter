@@ -48,10 +48,11 @@ public class ExportManager
         }
     }
 
-    public void queueJob(IJob job)
+    public boolean queueJob(IJob job)
     {
-        if (hasJob(job)) return;
+        if (hasJob(job)) return false;
         jobs.add(job);
+        return true;
     }
 
     private boolean hasJob(IJob job)

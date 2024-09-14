@@ -36,6 +36,16 @@ public class MapClient extends Thread
 
                 if (packetID == 0) // keep alive
                     sendPacket(new MapKeepAlive());
+
+                if (packetID == 1) // negotiate
+                {
+                    //
+                }
+
+                if (packetID == 2) // chunk data
+                {
+                    //
+                }
             } catch (IOException e) {
                 e.printStackTrace(System.err);
             }
